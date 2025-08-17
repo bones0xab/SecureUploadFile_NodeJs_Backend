@@ -62,58 +62,6 @@ router.post('/upload', async (req, res) => {
   }
 });
 
-// router.get('/download/:token', (req, res) => {
-
-//   const token = req.params.token;
- 
-//   db.get(`SELECT salt, iv, encPath, tokenExpiry, fileName, fileType  FROM files WHERE downloadToken = ?`,
-//    [token],
-//     (err, row) => {
-//    if(err) {
-//     console.err('DB error',err);
-//     return res.status(500).json({err: 'server Error '});
-//    }
-
-//    if(!row) return res.status(404).json({
-//     err: 'Not Found'
-//    });
-
-//    if(Date.now() > row.tokenExpiry){
-//     res.status(410).json({error : 'Link Expired'})
-//    }
-
-//    const filePath = row.encPath;
-
-//    if(!filePath || !fs.existsSync(filePath)){
-//     console.error('File Missing On disk',filePath)
-//     return res.status(404).json({error: 'File Missing'});
-//    }
-
-//    const ivB64 = row.iv ? Buffer.from(row.iv).toString('base64') : null;
-//     const saltB64 = row.salt ? Buffer.from(row.salt).toString('base64') : null;
-
-//       if (ivB64) res.setHeader('x-iv', ivB64);
-//       if (saltB64) res.setHeader('x-salt', saltB64);
-
-//       // file metadata headers
-//       if (row.fileName) res.setHeader('x-file-name', row.fileName);
-//       if (row.fileType) res.setHeader('x-file-type', row.fileType);
-//       res.setHeader('Content-Type', 'application/octet-stream');
-//       res.setHeader('Access-Control-Expose-Headers', 'x-iv, x-salt, x-file-name, x-file-type');
-
-//       // do not set Content-Disposition to original name unless you want browser to download encrypted file with .enc
-//       // e.g. res.setHeader('Content-Disposition', `attachment; filename="${path.basename(filePath)}"`);
-
-//       const stream = fs.createReadStream(filePath);
-//       stream.on('error', (streamErr) => {
-//         console.error('File stream error', streamErr);
-//         if (!res.headersSent) res.status(500).end('File stream error');
-//         else res.destroy(streamErr);
-//       });
-//       stream.pipe(res);
-//   })
-
-//   });
 
 router.post('/download', async (req, res) => {
   try {
@@ -199,5 +147,6 @@ db.run(
   }
 });
   
+
 
   module.exports = router;
